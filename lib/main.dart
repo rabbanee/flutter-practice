@@ -1,124 +1,80 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        '/': (context) => FirstPage(),
-        '/second': (context) => SecondPage(),
-        '/third': (context) => ThirdPage(),
-      },
-    );
-  }
-}
-
-class FirstPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('First Page'),
+        title: Text("Contacts"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Go to Second Page'),
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => SecondPage(),
-                //   ),
-                // );
-                Navigator.pushNamed(context, '/second');
+      body: ListView(
+        children: <Widget>[
+          ListTile(
+              title: Text('Daffa'),
+              subtitle: Text('085277xxxxx'),
+              leading: CircleAvatar(
+                child: Icon(Icons.person),
+              ),
+              onTap: () {
+                final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+                Scaffold.of(context).showSnackBar(snackBar);
               },
+              trailing: Icon(Icons.keyboard_arrow_right)),
+          ListTile(
+            title: Text('Ariq'),
+            subtitle: Text('085188xxxxx'),
+            leading: CircleAvatar(
+              child: Icon(Icons.person),
             ),
-            RaisedButton(
-              child: Text('Back to Third Page'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            onTap: () {
+              final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+              Scaffold.of(context).showSnackBar(snackBar);
+            },
+            trailing: Icon(Icons.keyboard_arrow_right),
+          ),
+          ListTile(
+            title: Text('Khaidir'),
+            subtitle: Text('086197xxxxx'),
+            leading: CircleAvatar(
+              child: Icon(Icons.person),
             ),
-          ],
-        ),
+            onTap: () {
+              final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+              Scaffold.of(context).showSnackBar(snackBar);
+            },
+            trailing: Icon(Icons.keyboard_arrow_right),
+          ),
+        ],
       ),
-    );
-  }
-}
-
-class SecondPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Second Page'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Go to Third Page'),
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ThirdPage(),
-                //   ),
-                // );
-                Navigator.pushNamed(context, '/third');
-              },
-            ),
-            RaisedButton(
-              child: Text('Back to First Page'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ThirdPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Third Page'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Back to First Page'),
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => FirstPage(),
-                //   ),
-                // );
-                Navigator.pushNamed(context, '/');
-              },
-            ),
-            RaisedButton(
-              child: Text('Back to Second Page'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.dialpad,
+              ),
+              title: Text(
+                'Dial',
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.contacts,
+              ),
+              title: Text('Contacts')),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.sms,
+                color: Colors.grey,
+              ),
+              title: Text('SMS')),
+        ],
+        currentIndex: 1,
       ),
     );
   }
