@@ -2,48 +2,121 @@ import 'package:flutter/material.dart';
 
 // void main() => runApp(MyApp());
 void main() => runApp(MaterialApp(
-      home: Myapp(),
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),
     ));
 
-class Myapp extends StatefulWidget {
-  @override
-  _MyappState createState() => _MyappState();
-}
-
-class _MyappState extends State<Myapp> {
-  TextEditingController controllerName = TextEditingController();
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("My Apps"),
-      ),
       body: new Container(
-        padding: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(color: Colors.white),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextField(
-              controller: controllerName,
-              decoration: new InputDecoration(
-                hintText: 'Full Name',
-                labelText: 'Name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(
-                    10.0,
+            Expanded(
+              flex: 3,
+              child: Container(
+                child: Center(
+                  child: Text(
+                    'Form Login',
+                    style: TextStyle(color: Colors.red, fontSize: 18),
                   ),
                 ),
-                prefixIcon: Icon(Icons.person),
               ),
-              keyboardType: TextInputType.numberWithOptions(),
             ),
-            RaisedButton(
-              child: Text(
-                "Submit",
-                style: TextStyle(color: Colors.white),
+            Expanded(
+              flex: 7,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                        left: 10,
+                      ),
+                      alignment: Alignment.topLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Username',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextField(
+                            decoration: new InputDecoration(
+                              fillColor: Colors.white,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 5.0,
+                              ),
+                              filled: true,
+                              alignLabelWithHint: true,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1.0),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 10, 0, 20),
+                      alignment: Alignment.topLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Password',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextField(
+                            decoration: new InputDecoration(
+                              filled: true,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 5.0,
+                              ),
+                              alignLabelWithHint: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1.0),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 80,
+                      width: 200,
+                      child: RaisedButton(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Colors.black,
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              color: Colors.blue,
-              onPressed: () {},
             ),
           ],
         ),
@@ -51,37 +124,3 @@ class _MyappState extends State<Myapp> {
     );
   }
 }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("My Apps"),
-//       ),
-//       body: new Container(
-//         padding: EdgeInsets.all(20.0),
-//         child: Column(
-//           children: <Widget>[
-//             TextField(
-//               decoration: new InputDecoration(
-//                 hintText: 'Full Name',
-//                 labelText: 'Name',
-//                 border: OutlineInputBorder(),
-//                 prefixIcon: Icon(Icons.person),
-//               ),
-//             ),
-//             RaisedButton(
-//               child: Text(
-//                 "Submit",
-//                 style: TextStyle(color: Colors.white),
-//               ),
-//               color: Colors.blue,
-//               onPressed: () {},
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
