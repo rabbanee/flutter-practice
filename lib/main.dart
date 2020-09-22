@@ -1,122 +1,169 @@
 import 'package:flutter/material.dart';
 
-// void main() => runApp(MyApp());
-void main() => runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyApp(),
-    ));
+void main() {
+  runApp(MaterialApp(
+    title: "Form Pendaftaran",
+    home: Myapp(),
+  ));
+}
 
-class MyApp extends StatelessWidget {
+class Myapp extends StatefulWidget {
+  @override
+  _MyappState createState() => _MyappState();
+}
+
+class _MyappState extends State<Myapp> {
+  TextEditingController controllernama = new TextEditingController();
+  String materi;
+  List listMateri = ['Flutter', 'Laravel', 'React JS'];
+  String jenisKelamin = '';
+
+  bool paket1 = false;
+  bool paket2 = false;
+  bool paket3 = false;
+  String paket1Value = '';
+  String paket2Value = '';
+  String paket3Value = '';
+
+  void paketValueHandler() {
+    paket1 ? paket1Value = 'Paket 1' : paket1Value = '';
+    paket2 ? paket2Value = 'Paket 2' : paket2Value = '';
+    paket3 ? paket3Value = 'Paket 3' : paket3Value = '';
+  }
+
+  void kirimData() {
+    paketValueHandler();
+    AlertDialog alertDialog = AlertDialog(
+      title: Text('Hasil'),
+      content: Container(
+        height: 200.0,
+        child: Column(
+          children: [
+            Text("Nama Lengkap : ${controllernama.text}"),
+            Text("Materi : $materi"),
+            Text("Jenis Kelamin : $jenisKelamin"),
+            Text("Tambahan : $paket1Value $paket2Value $paket3Value"),
+            // RaisedButton(
+            //   child: Text("OK"),
+            //   onPressed: () => Navigator.pop(context),
+            // )
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text("OK"),
+        )
+      ],
+      elevation: 24.0,
+    );
+    showDialog(context: context, child: alertDialog);
+  }
+
+  void pilihJK(String value) {
+    setState(() {
+      jenisKelamin = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: new Container(
-        decoration: BoxDecoration(color: Colors.white),
+      appBar: AppBar(
+        title: Text("Form Pendaftaran"),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              flex: 3,
-              child: Container(
-                child: Center(
-                  child: Text(
-                    'Form Login',
-                    style: TextStyle(color: Colors.red, fontSize: 18),
-                  ),
-                ),
+          children: [
+            TextField(
+              controller: controllernama,
+              decoration: InputDecoration(
+                hintText: "Nama Lengkap",
+                labelText: "Nama Lengkap",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
               ),
+              // keyboardType: TextInputType.text(),
             ),
-            Expanded(
-              flex: 7,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Username',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextField(
-                            decoration: new InputDecoration(
-                              fillColor: Colors.white,
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10.0,
-                                horizontal: 5.0,
-                              ),
-                              filled: true,
-                              alignLabelWithHint: true,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 0, 20),
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Password',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextField(
-                            decoration: new InputDecoration(
-                              filled: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10.0,
-                                horizontal: 5.0,
-                              ),
-                              alignLabelWithHint: true,
-                              fillColor: Colors.white,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 80,
-                      width: 200,
-                      child: RaisedButton(
-                        child: Text(
-                          "Login",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        color: Colors.black,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
+            Container(
+              width: 650,
+              child: DropdownButton(
+                  hint: Text('Materi Yang Di Ambil'),
+                  value: materi,
+                  items: listMateri.map((value) {
+                    return DropdownMenuItem(child: Text(value), value: value);
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      materi = value;
+                    });
+                  }),
+            ),
+            Text('Jenis Kelamin'),
+            Row(
+              children: <Widget>[
+                Radio(
+                  value: 'Laki - Laki',
+                  groupValue: jenisKelamin,
+                  onChanged: (String value) {
+                    pilihJK(value);
+                  },
+                  activeColor: Colors.blue,
                 ),
+                Text('Laki - Laki'),
+                Radio(
+                  value: 'Perempuan',
+                  groupValue: jenisKelamin,
+                  onChanged: (String value) {
+                    pilihJK(value);
+                  },
+                  activeColor: Colors.blue,
+                ),
+                Text('Perempuan'),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: paket1,
+                  onChanged: (bool value) {
+                    setState(() {
+                      paket1 = value;
+                    });
+                  },
+                ),
+                Text('Paket 1'),
+                Checkbox(
+                  value: paket2,
+                  onChanged: (bool value) {
+                    setState(() {
+                      paket2 = value;
+                    });
+                  },
+                ),
+                Text('Paket 2'),
+                Checkbox(
+                  value: paket3,
+                  onChanged: (bool value) {
+                    setState(() {
+                      paket3 = value;
+                    });
+                  },
+                ),
+                Text('Paket 3'),
+              ],
+            ),
+            RaisedButton(
+              child: Text(
+                "Kirim",
+                style: TextStyle(color: Colors.white),
               ),
+              color: Colors.blue,
+              onPressed: () {
+                kirimData();
+              },
             ),
           ],
         ),
