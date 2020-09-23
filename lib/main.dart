@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: "Contacts",
+    title: "Form Pendaftaran",
     home: MyApp(),
   ));
 }
@@ -14,396 +14,217 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   TextEditingController controllernama = new TextEditingController();
-  TextEditingController controllerphone = new TextEditingController();
-  TextEditingController controlleraddress = new TextEditingController();
-  TextEditingController controllercity = new TextEditingController();
-  TextEditingController controlleremail = new TextEditingController();
-  TextEditingController controllerbirthday = new TextEditingController();
-  TextEditingController controllerzip = new TextEditingController();
+  String materi;
+  List listMateri = ['Flutter', 'Laravel', 'React JS'];
+  String jenisKelamin = '';
 
-  final _formKey = GlobalKey<FormState>();
-  String area;
-  String state;
-  List listArea = ['+62', '+1', '+2'];
-  List listState = ['Indonesia', 'US', 'UK'];
+  bool paket1 = false;
+  bool paket2 = false;
+  bool paket3 = false;
+  String paket1Value = '';
+  String paket2Value = '';
+  String paket3Value = '';
+
+  void paketValueHandler() {
+    paket1 ? paket1Value = 'Paket 1' : paket1Value = '';
+    paket2 ? paket2Value = 'Paket 2' : paket2Value = '';
+    paket3 ? paket3Value = 'Paket 3' : paket3Value = '';
+  }
+
+  void kirimData() {
+    paketValueHandler();
+    AlertDialog alertDialog = AlertDialog(
+      title: Text('Hasil'),
+      content: Container(
+        height: 200.0,
+        child: Column(
+          children: [
+            Text("Nama Lengkap : ${controllernama.text}"),
+            Text("Materi : $materi"),
+            Text("Jenis Kelamin : $jenisKelamin"),
+            Text("Tambahan : $paket1Value $paket2Value $paket3Value"),
+            // RaisedButton(
+            //   child: Text("OK"),
+            //   onPressed: () => Navigator.pop(context),
+            // )
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text("OK"),
+        )
+      ],
+      elevation: 24.0,
+    );
+    showDialog(context: context, child: alertDialog);
+  }
+
+  void pilihJK(String value) {
+    setState(() {
+      jenisKelamin = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Contacts"),
-        ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.person),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(),
-                        width: 260,
-                        child: TextFormField(
-                          controller: controllernama,
-                          decoration: InputDecoration(
-                            border: new UnderlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                            ),
-                            labelText: "Name",
-                            contentPadding: EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Name is required';
-                            }
-                            return null;
-                          },
-                          // keyboardType: TextInputType.text(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.phone),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(),
-                        width: 140,
-                        child: TextFormField(
-                          controller: controllerphone,
-                          keyboardType: TextInputType.numberWithOptions(),
-                          decoration: InputDecoration(
-                            border: new UnderlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                            ),
-                            labelText: "Phone",
-                            contentPadding: EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Phone is required';
-                            }
-                            if (RegExp(r"(^(?:[+0]9)?[0-9]{10,12}$)")
-                                    .hasMatch(value) !=
-                                true) {
-                              return 'Number is not valid';
-                            }
-                            return null;
-                          },
-                          // keyboardType: TextInputType.text(),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 8.0),
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8.0),
-                            topRight: Radius.circular(8.0),
-                          ),
-                        ),
-                        child: DropdownButtonFormField(
-                            hint: Text('Area'),
-                            value: area,
-                            items: listArea.map((value) {
-                              return DropdownMenuItem(
-                                  child: Text(value), value: value);
-                            }).toList(),
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Area is required';
-                              }
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                area = value;
-                              });
-                            }),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.pin_drop),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(),
-                        width: 260,
-                        child: TextFormField(
-                          controller: controlleraddress,
-                          decoration: InputDecoration(
-                            border: new UnderlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                            ),
-                            labelText: "Address",
-                            contentPadding: EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Address is required';
-                            }
-                          },
-                          // keyboardType: TextInputType.text(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(),
-                        width: 260,
-                        child: TextFormField(
-                          controller: controllercity,
-                          decoration: InputDecoration(
-                            border: new UnderlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                            ),
-                            labelText: "City",
-                            contentPadding: EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'City is required';
-                            }
-                          },
-                          // keyboardType: TextInputType.text(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 8.0),
-                        width: 102,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8.0),
-                            topRight: Radius.circular(8.0),
-                          ),
-                        ),
-                        child: DropdownButtonFormField(
-                            hint: Text('State'),
-                            value: state,
-                            items: listState.map((value) {
-                              return DropdownMenuItem(
-                                  child: Text(value), value: value);
-                            }).toList(),
-                            validator: (value) {
-                              if (value == null) {
-                                return 'State is required';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                state = value;
-                              });
-                            }),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(),
-                        width: 140,
-                        child: TextFormField(
-                          controller: controllerzip,
-                          keyboardType: TextInputType.numberWithOptions(),
-                          decoration: InputDecoration(
-                            border: new UnderlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                            ),
-                            labelText: "Zip",
-                            contentPadding: EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Zip is required';
-                            }
-                          },
-                          // keyboardType: TextInputType.text(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.email),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(),
-                        width: 260,
-                        child: TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          controller: controlleremail,
-                          decoration: InputDecoration(
-                            border: new UnderlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                            ),
-                            labelText: "Email",
-                            contentPadding: EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Email is required';
-                            }
-                            if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(value) !=
-                                true) {
-                              return 'Email is not valid';
-                            }
-                            return null;
-                          },
-                          // keyboardType: TextInputType.text(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.cake),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(),
-                        width: 260,
-                        child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: controllerbirthday,
-                          decoration: InputDecoration(
-                            border: new UnderlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                            ),
-                            labelText: "Birthday",
-                            contentPadding: EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[300],
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Birthday is required';
-                            }
-                            return null;
-                          },
-                          // keyboardType: TextInputType.text(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  RaisedButton(
-                    child: Text(
-                      "Kirim",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Colors.blue,
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        // If the form is valid, display a snackbar. In the real world,
-                        // you'd often call a server or save the information in a database.
-
-                        Scaffold.of(context)
-                            .showSnackBar(SnackBar(content: Text('Good Job!')));
-                      }
-                    },
-                  ),
-                ],
+      appBar: AppBar(
+        title: Text("Form Pendaftaran"),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("img/cat.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Text(
+                'Cat',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-        ));
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {
+                print('clicked');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person_add),
+              title: Text('Register'),
+              onTap: () {
+                print('clicked');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Login'),
+              onTap: () {
+                print('clicked');
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                print('clicked');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.live_help),
+              title: Text('Help and Feedback'),
+              onTap: () {
+                print('clicked');
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: controllernama,
+              decoration: InputDecoration(
+                hintText: "Nama Lengkap",
+                labelText: "Nama Lengkap",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+              ),
+              // keyboardType: TextInputType.text(),
+            ),
+            Container(
+              width: 650,
+              child: DropdownButton(
+                  hint: Text('Materi Yang Di Ambil'),
+                  value: materi,
+                  items: listMateri.map((value) {
+                    return DropdownMenuItem(child: Text(value), value: value);
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      materi = value;
+                    });
+                  }),
+            ),
+            Text('Jenis Kelamin'),
+            Row(
+              children: <Widget>[
+                Radio(
+                  value: 'Laki - Laki',
+                  groupValue: jenisKelamin,
+                  onChanged: (String value) {
+                    pilihJK(value);
+                  },
+                  activeColor: Colors.blue,
+                ),
+                Text('Laki - Laki'),
+                Radio(
+                  value: 'Perempuan',
+                  groupValue: jenisKelamin,
+                  onChanged: (String value) {
+                    pilihJK(value);
+                  },
+                  activeColor: Colors.blue,
+                ),
+                Text('Perempuan'),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: paket1,
+                  onChanged: (bool value) {
+                    setState(() {
+                      paket1 = value;
+                    });
+                  },
+                ),
+                Text('Paket 1'),
+                Checkbox(
+                  value: paket2,
+                  onChanged: (bool value) {
+                    setState(() {
+                      paket2 = value;
+                    });
+                  },
+                ),
+                Text('Paket 2'),
+                Checkbox(
+                  value: paket3,
+                  onChanged: (bool value) {
+                    setState(() {
+                      paket3 = value;
+                    });
+                  },
+                ),
+                Text('Paket 3'),
+              ],
+            ),
+            RaisedButton(
+              child: Text(
+                "Kirim",
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.blue,
+              onPressed: () {
+                kirimData();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

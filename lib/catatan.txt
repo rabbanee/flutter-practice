@@ -1,0 +1,7 @@
+GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context, MaterialPageRoute(builder: (contect) => ZikirPagi())
+    )
+  },
+)
